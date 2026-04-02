@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Bahía RP - Servidor FiveM Caribeño</title>
-    <link href="cfx.re/join/x9kmmr" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -419,6 +419,225 @@
             color: var(--sand-gold);
         }
 
+        /* === NUEVA SECCIÓN: COLLAGE DE CIUDADANOS === */
+        .citizens-section {
+            background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .citizens-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .citizens-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .citizens-intro p {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            line-height: 1.8;
+        }
+
+        /* Masonry Grid Collage */
+        .collage-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .collage-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 250px;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .collage-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid transparent;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .collage-item:hover {
+            transform: scale(1.05) rotate(2deg);
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.4);
+            border-color: var(--caribbean-blue);
+        }
+
+        .collage-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .collage-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Diferentes tamaños para efecto collage */
+        .collage-item.small {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .collage-item.medium {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .collage-item.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .collage-item.tall {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .collage-item.wide {
+            grid-column: span 3;
+            grid-row: span 1;
+        }
+
+        /* Overlay de información */
+        .citizen-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 30px 20px 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .collage-item:hover .citizen-overlay {
+            transform: translateY(0);
+        }
+
+        .citizen-name {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            color: var(--sand-gold);
+            margin-bottom: 5px;
+        }
+
+        .citizen-role {
+            font-size: 0.9rem;
+            color: var(--caribbean-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .citizen-quote {
+            font-size: 0.85rem;
+            color: #ccc;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Badge de estado */
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.8);
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .status-online {
+            background: #2ecc71;
+            color: #2ecc71;
+        }
+
+        .status-offline {
+            background: #e74c3c;
+            color: #e74c3c;
+        }
+
+        /* Efecto de polaroid en algunas fotos */
+        .polaroid {
+            background: white;
+            padding: 10px 10px 40px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: rotate(-3deg);
+        }
+
+        .polaroid img {
+            filter: sepia(20%) contrast(110%);
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        /* Responsive del collage */
+        @media (max-width: 1200px) {
+            .collage-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .collage-item.wide {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .collage-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 200px;
+                gap: 10px;
+                padding: 10px;
+            }
+            .collage-item.large {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+            .collage-item.wide {
+                grid-column: span 2;
+            }
+            .collage-item.tall {
+                grid-row: span 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .collage-grid {
+                grid-template-columns: 1fr;
+            }
+            .collage-item {
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
+            }
+        }
+
         /* Footer */
         footer {
             background: #000;
@@ -453,7 +672,7 @@
             box-shadow: 0 0 30px var(--caribbean-blue);
         }
 
-        /* Responsive */
+        /* Responsive general */
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
             .section-title { font-size: 2.5rem; }
@@ -497,20 +716,20 @@
 
     <!-- Hidden Audio Element -->
     <audio id="serverMusic" loop>
-        <!-- Reemplaza con la URL de tu canción del servidor -->
         <source src="https://files.catbox.moe/j91rl9.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Navigation -->
     <nav>
-    <div class="logo">
-    <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/la_bahia.png" alt="Bahía RP" style="height: 40px; width: auto;">
-</div>
+        <div class="logo">
+            <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/la_bahia.png" alt="Bahía RP" style="height: 40px; width: auto;">
+        </div>
         <ul class="nav-links">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#trabajos">Trabajos</a></li>
             <li><a href="#bandas">Bandas</a></li>
             <li><a href="#coches">Coches</a></li>
+            <li><a href="#ciudadanos">Ciudadanos</a></li>
             <li><a href="https://discord.gg/tulink" target="_blank">Discord</a></li>
         </ul>
     </nav>
@@ -526,7 +745,6 @@
         </div>
     </section>
 
- 
     <!-- Jobs Section -->
     <section class="jobs-section" id="trabajos">
         <span class="palm-decoration palm-left">🌴</span>
@@ -535,7 +753,6 @@
         <h2 class="section-title fade-in">💼 TRABAJOS WHITELIST</h2>
         
         <div class="jobs-grid">
-            <!-- Minero -->
             <div class="job-card fade-in">
                 <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/gs.png" alt="Trabajo de Minero" class="job-image">
                 <div class="job-content">
@@ -545,23 +762,21 @@
                 </div>
             </div>
 
-            <!-- DSB -->
             <div class="job-card fade-in">
                 <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/DSB_Logo.png" alt="DSB Departamento de Salud" class="job-image">
                 <div class="job-content">
                     <span class="job-badge" style="background: #e74c3c;">Whitelist</span>
                     <h3>🚑 DSB - SALUD</h3>
-                    <p>Departamento de Salud de Bahía. Salva vidas en las paradisíacas pero peligrosas costas caribeñas. Sistema médico avanzado, ambulancias equipadas y mecánicas de heridas realistas. ¡Únete al equipo médico elite de la isla!</p>
+                    <p>Departamento de Salud de Bahía. Salva vidas en las paradisíacas pero peligrosas costas caribeñas. Sistema médico avanzado, ambulancias equipadas y mecánicas de heridas realistas.</p>
                 </div>
             </div>
 
-            <!-- PNB -->
             <div class="job-card fade-in">
                 <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/PNB_Logo.png" alt="PNB Policía" class="job-image">
                 <div class="job-content">
                     <span class="job-badge" style="background: #3498db;">Whitelist</span>
                     <h3>👮 PNB - SEGURIDAD</h3>
-                    <p>Policía Nacional de Bahía. Mantén el orden en las calles de nuestro paraíso tropical. Patrullajes en lanchas, 4x4 y helicópteros. Sistema de investigación criminal, arrestos y mantenimiento de la paz ciudadana.</p>
+                    <p>Policía Nacional de Bahía. Mantén el orden en las calles de nuestro paraíso tropical. Patrullajes en lanchas, 4x4 y helicópteros.</p>
                 </div>
             </div>
         </div>
@@ -573,8 +788,7 @@
             <div class="free-badge">💎</div>
             <h2>BANDAS, MAFIAS Y CARTELES</h2>
             <p>¡Totalmente <strong>GRATIS</strong>! En Bahía RP creemos en la libertad del crimen organizado. 
-            Crea tu propia banda callejera, establece una mafia italiana o controla el tráfico como un cartel latinoamericano. 
-            Sin costos ocultos, sin pagos por whitelist. Tu imaginación es el límite en nuestras costas.</p>
+            Crea tu propia banda callejera, establece una mafia italiana o controla el tráfico como un cartel latinoamericano.</p>
             
             <div class="gang-types">
                 <div class="gang-type">🔫 Bandas Callejeras</div>
@@ -592,7 +806,7 @@
             <div class="car-card fade-in">
                 <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/a2ac30-sd3.jpg" alt="Coche Custom 1">
                 <div class="car-overlay">
-                    <h3>Motodeportivas </h3>
+                    <h3>Motodeportivas</h3>
                     <p>Velocidad máxima para las carreteras costeras</p>
                 </div>
             </div>
@@ -601,7 +815,7 @@
                 <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/6fcc11-yos8.jpg" alt="Coche Custom 2">
                 <div class="car-overlay">
                     <h3>Off-Road</h3>
-                    <p>Domina  las playas de Bahía</p>
+                    <p>Domina las playas de Bahía</p>
                 </div>
             </div>
 
@@ -623,15 +837,164 @@
         </div>
     </section>
 
+    <!-- === NUEVA SECCIÓN: CIUDADANOS DESTACADOS === -->
+    <section class="citizens-section" id="ciudadanos">
+        <span class="palm-decoration palm-left">🌴</span>
+        <span class="palm-decoration palm-right">🌴</span>
+        
+        <h2 class="section-title fade-in">👥 CIUDADANOS DE BAHÍA</h2>
+        
+        <div class="citizens-intro fade-in">
+            <p>Conoce a los personajes que dan vida a nuestras calles. Desde empresarios hasta artistas callejeros, 
+            cada ciudadano tiene una historia única que contar. ¿Serás tú el próximo en unirte a nuestra galería?</p>
+        </div>
+
+        <div class="collage-container">
+            <div class="collage-grid">
+                <!-- Ciudadano 1 - Grande -->
+                <div class="collage-item large fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop" alt="Ciudadano 1">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Carlos "El Patrón" Mendez</div>
+                        <div class="citizen-role">Empresario / Nightclub</div>
+                        <div class="citizen-quote">"En Bahía, el dinero habla y yo escucho."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 2 - Pequeño -->
+                <div class="collage-item small fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" alt="Ciudadano 2">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">María Santos</div>
+                        <div class="citizen-role">Médico DSB</div>
+                        <div class="citizen-quote">"Salvar vidas es mi vocación."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 3 - Alto -->
+                <div class="collage-item tall fade-in">
+                    <span class="status-badge status-offline"></span>
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=800&fit=crop" alt="Ciudadano 3">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Ricky "La Sombra"</div>
+                        <div class="citizen-role">Mecánico</div>
+                        <div class="citizen-quote">"Ningún coche se me resiste."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 4 - Medio -->
+                <div class="collage-item medium fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=400&fit=crop" alt="Ciudadano 4">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Isabella Cruz</div>
+                        <div class="citizen-role">Artista / Música</div>
+                        <div class="citizen-quote">"La música es el alma de Bahía."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 5 - Pequeño -->
+                <div class="collage-item small fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" alt="Ciudadano 5">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Juan "El Policía"</div>
+                        <div class="citizen-role">PNB - Sargento</div>
+                        <div class="citizen-quote">"La ley es la ley."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 6 - Ancho -->
+                <div class="collage-item wide fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200&h=400&fit=crop" alt="Ciudadano 6">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Sofia "La Reina" Vega</div>
+                        <div class="citizen-role">Influencer / Streamer</div>
+                        <div class="citizen-quote">"Documentando cada momento en el paraíso."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 7 - Medio -->
+                <div class="collage-item medium fade-in">
+                    <span class="status-badge status-offline"></span>
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=400&fit=crop" alt="Ciudadano 7">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Diego Marino</div>
+                        <div class="citizen-role">Pescador / Comerciante</div>
+                        <div class="citizen-quote">"El mar da y el mar quita."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 8 - Pequeño -->
+                <div class="collage-item small fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop" alt="Ciudadano 8">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Elena Torres</div>
+                        <div class="citizen-role">Chef / Restaurante</div>
+                        <div class="citizen-quote">"Sabores auténticos del Caribe."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 9 - Alto -->
+                <div class="collage-item tall fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=800&fit=crop" alt="Ciudadano 9">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Miguel "El Corredor"</div>
+                        <div class="citizen-role">Taxista / Informante</div>
+                        <div class="citizen-quote">"Conozco cada rincón de la isla."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 10 - Pequeño -->
+                <div class="collage-item small fade-in">
+                    <span class="status-badge status-offline"></span>
+                    <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop" alt="Ciudadano 10">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Carmen Diaz</div>
+                        <div class="citizen-role">Abogada</div>
+                        <div class="citizen-quote">"Todos merecen una defensa."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 11 - Grande -->
+                <div class="collage-item large fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=800&h=800&fit=crop" alt="Ciudadano 11">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Alejandro "El Arquitecto"</div>
+                        <div class="citizen-role">Constructor / Inmobiliaria</div>
+                        <div class="citizen-quote">"Construyendo el futuro de Bahía."</div>
+                    </div>
+                </div>
+
+                <!-- Ciudadano 12 - Medio -->
+                <div class="collage-item medium fade-in">
+                    <span class="status-badge status-online"></span>
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=400&fit=crop" alt="Ciudadano 12">
+                    <div class="citizen-overlay">
+                        <div class="citizen-name">Lucia Fernandez</div>
+                        <div class="citizen-role">Periodista</div>
+                        <div class="citizen-quote">"La verdad siempre sale a la luz."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
         <div class="social-links">
             <a href="https://discord.gg/XeqR9QjGpq" target="_blank" title="Discord">💬</a>
-            <a href="https://www.tiktok.com/@labahia_rp?is_from_webapp=1&sender_device=pc" target="_blank" title="TikTok">🎵</a>
+            <a href="https://www.tiktok.com/@labahia_rp" target="_blank" title="TikTok">🎵</a>
             <a href="#" target="_blank" title="YouTube">📺</a>
-            <a href="https://www.instagram.com/labahia.rp?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" title="Instagram">📷</a>
+            <a href="https://www.instagram.com/labahia.rp" target="_blank" title="Instagram">📷</a>
         </div>
-        <p>&copy; 2026 Bahía RP - Servidor  Caribeño. Todos los derechos reservados. 🌴</p>
+        <p>&copy; 2026 Bahía RP - Servidor Caribeño. Todos los derechos reservados. 🌴</p>
         <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">Hecho con 💙 en las costas del Caribe</p>
     </footer>
 
@@ -690,6 +1053,18 @@
             const scrolled = window.pageYOffset;
             const parallax = document.querySelector('.hero');
             parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+
+        // Efecto hover adicional para el collage
+        document.querySelectorAll('.collage-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.zIndex = '100';
+            });
+            item.addEventListener('mouseleave', function() {
+                setTimeout(() => {
+                    this.style.zIndex = '1';
+                }, 400);
+            });
         });
     </script>
 </body>
