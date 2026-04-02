@@ -1,1071 +1,230 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Bahía RP - Servidor FiveM Caribeño</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --caribbean-blue: #00D4FF;
-            --tropical-orange: #FF6B35;
-            --sunset-pink: #FF006E;
-            --sand-gold: #FFD700;
-            --deep-ocean: #0066CC;
-            --palm-green: #2ECC71;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: #0a0a0a;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        /* Audio Player */
-        .audio-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid var(--caribbean-blue);
-            border-radius: 50px;
-            padding: 15px 25px;
-            cursor: pointer;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .audio-control:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--caribbean-blue);
-        }
-
-        .audio-control.playing {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px var(--caribbean-blue); }
-            50% { box-shadow: 0 0 40px var(--tropical-orange); }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 20px 50px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
-            z-index: 999;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, var(--caribbean-blue), var(--tropical-orange));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--tropical-orange);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), 
-                        url('https://kimi-web-img.moonshot.cn/img/media.istockphoto.com/9ad4ef62001ee5f4896bbcbad57340e6fdb712df.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%2300D4FF" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: cover;
-            background-position: bottom;
-            animation: wave 10s ease-in-out infinite;
-        }
-
-        @keyframes wave {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .hero-content {
-            z-index: 1;
-            max-width: 900px;
-            padding: 0 20px;
-        }
-
-        .hero h1 {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 6rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 40px rgba(0, 212, 255, 0.8);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
-            to { text-shadow: 0 0 60px rgba(255, 107, 53, 0.8), 0 0 80px rgba(0, 212, 255, 0.6); }
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 30px;
-            color: #e0e0e0;
-            line-height: 1.8;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(45deg, var(--caribbean-blue), var(--tropical-orange));
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 50px;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.4);
-        }
-
-        /* Section Styles */
-        section {
-            padding: 100px 50px;
-            position: relative;
-        }
-
-        .section-title {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 4rem;
-            text-align: center;
-            margin-bottom: 60px;
-            background: linear-gradient(45deg, var(--caribbean-blue), var(--sand-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Jobs Section */
-        .jobs-section {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .jobs-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .jobs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .job-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .job-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--tropical-orange);
-            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
-        }
-
-        .job-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .job-card:hover .job-image {
-            transform: scale(1.1);
-        }
-
-        .job-content {
-            padding: 30px;
-        }
-
-        .job-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            background: var(--sunset-pink);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .job-content h3 {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--caribbean-blue);
-        }
-
-        .job-content p {
-            color: #b0b0b0;
-            line-height: 1.6;
-        }
-
-        /* Gangs Section */
-        .gangs-section {
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
-                        url('https://kimi-web-img.moonshot.cn/img/forum-cfx-re.akamaized.net/50412bf31a111a430f54a0bbe958cfa903fc7c41.jpeg');
-            background-size: cover;
-            background-attachment: fixed;
-            text-align: center;
-        }
-
-        .gangs-content {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 60px;
-            border-radius: 30px;
-            border: 3px solid var(--palm-green);
-            box-shadow: 0 0 60px rgba(46, 204, 113, 0.3);
-        }
-
-        .free-badge {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .gangs-content h2 {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 3.5rem;
-            color: var(--palm-green);
-            margin-bottom: 20px;
-        }
-
-        .gangs-content p {
-            font-size: 1.2rem;
-            color: #e0e0e0;
-            line-height: 1.8;
-        }
-
-        .gang-types {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .gang-type {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(255, 0, 110, 0.2));
-            padding: 20px 40px;
-            border-radius: 15px;
-            border: 2px solid var(--palm-green);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s;
-        }
-
-        .gang-type:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--palm-green);
-        }
-
-        /* Cars Section */
-        .cars-section {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            position: relative;
-        }
-
-        .cars-showcase {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .car-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            height: 300px;
-            border: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .car-card:nth-child(odd) {
-            border-color: var(--caribbean-blue);
-        }
-
-        .car-card:nth-child(even) {
-            border-color: var(--tropical-orange);
-        }
-
-        .car-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .car-card:hover img {
-            transform: scale(1.2);
-        }
-
-        .car-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            padding: 30px;
-            transform: translateY(100%);
-            transition: transform 0.3s;
-        }
-
-        .car-card:hover .car-overlay {
-            transform: translateY(0);
-        }
-
-        .car-overlay h3 {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 2rem;
-            color: var(--sand-gold);
-        }
-
-        /* === NUEVA SECCIÓN: COLLAGE DE CIUDADANOS === */
-        .citizens-section {
-            background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .citizens-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .citizens-intro {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 60px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .citizens-intro p {
-            font-size: 1.2rem;
-            color: #e0e0e0;
-            line-height: 1.8;
-        }
-
-        /* Masonry Grid Collage */
-        .collage-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .collage-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 250px;
-            gap: 15px;
-            padding: 20px;
-        }
-
-        .collage-item {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 3px solid transparent;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .collage-item:hover {
-            transform: scale(1.05) rotate(2deg);
-            z-index: 10;
-            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.4);
-            border-color: var(--caribbean-blue);
-        }
-
-        .collage-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .collage-item:hover img {
-            transform: scale(1.1);
-        }
-
-        /* Diferentes tamaños para efecto collage */
-        .collage-item.small {
-            grid-column: span 1;
-            grid-row: span 1;
-        }
-
-        .collage-item.medium {
-            grid-column: span 2;
-            grid-row: span 1;
-        }
-
-        .collage-item.large {
-            grid-column: span 2;
-            grid-row: span 2;
-        }
-
-        .collage-item.tall {
-            grid-column: span 1;
-            grid-row: span 2;
-        }
-
-        .collage-item.wide {
-            grid-column: span 3;
-            grid-row: span 1;
-        }
-
-        /* Overlay de información */
-        .citizen-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            padding: 30px 20px 20px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .collage-item:hover .citizen-overlay {
-            transform: translateY(0);
-        }
-
-        .citizen-name {
-            font-family: 'Bebas Neue', cursive;
-            font-size: 1.5rem;
-            color: var(--sand-gold);
-            margin-bottom: 5px;
-        }
-
-        .citizen-role {
-            font-size: 0.9rem;
-            color: var(--caribbean-blue);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .citizen-quote {
-            font-size: 0.85rem;
-            color: #ccc;
-            margin-top: 10px;
-            font-style: italic;
-        }
-
-        /* Badge de estado */
-        .status-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.8);
-            box-shadow: 0 0 10px currentColor;
-        }
-
-        .status-online {
-            background: #2ecc71;
-            color: #2ecc71;
-        }
-
-        .status-offline {
-            background: #e74c3c;
-            color: #e74c3c;
-        }
-
-        /* Efecto de polaroid en algunas fotos */
-        .polaroid {
-            background: white;
-            padding: 10px 10px 40px 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transform: rotate(-3deg);
-        }
-
-        .polaroid img {
-            filter: sepia(20%) contrast(110%);
-        }
-
-        .polaroid:hover {
-            transform: rotate(0deg) scale(1.1);
-        }
-
-        /* Responsive del collage */
-        @media (max-width: 1200px) {
-            .collage-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .collage-item.wide {
-                grid-column: span 2;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .collage-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-auto-rows: 200px;
-                gap: 10px;
-                padding: 10px;
-            }
-            .collage-item.large {
-                grid-column: span 2;
-                grid-row: span 2;
-            }
-            .collage-item.wide {
-                grid-column: span 2;
-            }
-            .collage-item.tall {
-                grid-row: span 1;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .collage-grid {
-                grid-template-columns: 1fr;
-            }
-            .collage-item {
-                grid-column: span 1 !important;
-                grid-row: span 1 !important;
-            }
-        }
-
-        /* Footer */
-        footer {
-            background: #000;
-            padding: 50px;
-            text-align: center;
-            border-top: 3px solid var(--caribbean-blue);
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .social-links a {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--caribbean-blue), var(--tropical-orange));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .social-links a:hover {
-            transform: rotate(360deg) scale(1.2);
-            box-shadow: 0 0 30px var(--caribbean-blue);
-        }
-
-        /* Responsive general */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .section-title { font-size: 2.5rem; }
-            nav { padding: 15px 20px; }
-            .nav-links { display: none; }
-            section { padding: 60px 20px; }
-            .gangs-content { padding: 30px; }
-            .cars-showcase { grid-template-columns: 1fr; }
-        }
-
-        /* Scroll Animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Palm Tree Decoration */
-        .palm-decoration {
-            position: absolute;
-            font-size: 8rem;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-
-        .palm-left { top: 10%; left: 5%; transform: rotate(-15deg); }
-        .palm-right { top: 10%; right: 5%; transform: rotate(15deg) scaleX(-1); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Bahía RP - Rediseño LA</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary:#ff3c38;
+    --secondary:#1e90ff;
+    --accent:#ffd166;
+    --dark:#0a0a0a;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Montserrat',sans-serif;
+    background:#000;
+    color:#fff;
+}
+
+/* HERO CON PLAYA LOS ANGELES */
+.hero{
+    height:100vh;
+    background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.7)),
+    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.hero h1{
+    font-family:'Bebas Neue';
+    font-size:6rem;
+    color:var(--accent);
+}
+
+.hero p{margin-top:20px;color:#ddd;max-width:700px;}
+
+.cta{
+    margin-top:30px;
+    display:inline-block;
+    padding:15px 40px;
+    background:linear-gradient(45deg,var(--primary),var(--secondary));
+    border-radius:50px;
+    text-decoration:none;
+    color:#fff;
+    font-weight:700;
+}
+
+.section{padding:80px 20px;}
+
+.title{
+    text-align:center;
+    font-size:3rem;
+    font-family:'Bebas Neue';
+    color:var(--primary);
+    margin-bottom:50px;
+}
+
+/* TRABAJOS */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.card{
+    background:#111;
+    border:2px solid var(--secondary);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.card img{width:100%;height:200px;object-fit:cover;}
+
+.card .content{padding:20px;}
+
+.card h3{color:var(--accent);}
+
+/* NUEVA SECCIÓN CIUDADANOS */
+.citizens{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.citizen-card{
+    position:relative;
+    border-radius:15px;
+    overflow:hidden;
+    border:2px solid var(--secondary);
+}
+
+.citizen-card img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+    transition:.3s;
+}
+
+.citizen-card:hover img{transform:scale(1.1);}
+
+.overlay{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
+    padding:20px;
+    transform:translateY(100%);
+    transition:.3s;
+}
+
+.citizen-card:hover .overlay{transform:translateY(0);}
+
+.name{
+    font-family:'Bebas Neue';
+    font-size:1.5rem;
+    color:var(--accent);
+}
+
+.role{color:var(--secondary);font-size:.9rem;}
+
+footer{
+    padding:40px;
+    text-align:center;
+    border-top:2px solid var(--secondary);
+}
+
+</style>
 </head>
+
 <body>
 
-    <!-- Audio Control -->
-    <div class="audio-control" id="audioControl" onclick="toggleMusic()">
-        <span id="audioIcon">🎵</span> <span id="audioText">Reproducir Música</span>
-    </div>
+<!-- HERO -->
+<section class="hero">
+<div>
+<h1>🌴 BAHÍA RP 🌴</h1>
+<p>Servidor FiveM con estilo Los Ángeles, playas, roleplay serio y comunidad activa</p>
+<a href="#" class="cta">Conectar</a>
+</div>
+</section>
 
-    <!-- Hidden Audio Element -->
-    <audio id="serverMusic" loop>
-        <source src="https://files.catbox.moe/j91rl9.mp3" type="audio/mpeg">
-    </audio>
+<!-- TRABAJOS -->
+<section class="section">
+<h2 class="title">💼 Trabajos</h2>
+<div class="grid">
+<div class="card">
+<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/gs.png">
+<div class="content">
+<h3>Minero</h3>
+<p>Extrae recursos y gana dinero.</p>
+</div>
+</div>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/la_bahia.png" alt="Bahía RP" style="height: 40px; width: auto;">
-        </div>
-        <ul class="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#trabajos">Trabajos</a></li>
-            <li><a href="#bandas">Bandas</a></li>
-            <li><a href="#coches">Coches</a></li>
-            <li><a href="#ciudadanos">Ciudadanos</a></li>
-            <li><a href="https://discord.gg/tulink" target="_blank">Discord</a></li>
-        </ul>
-    </nav>
+<div class="card">
+<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/DSB_Logo.png">
+<div class="content">
+<h3>Médico</h3>
+<p>Salva vidas en la ciudad.</p>
+</div>
+</div>
 
-    <!-- Hero Section -->
-    <section class="hero" id="inicio">
-        <div class="hero-content fade-in">
-            <h1>🌴 BAHÍA RP 🌴</h1>
-            <p>Bienvenido al paraíso caribeño de FiveM. Sumérgete en una experiencia de roleplay única ambientada en las costas tropicales de Bahía. 
-            Disfruta de economía equilibrada, trabajos exclusivos, bandas libres y los mejores coches custom de la isla. 
-            ¡Tu nueva vida te espera bajo el sol caribeño!</p>
-            <a href="fivem://connect/tu-ip:30120" class="cta-button">🎮 Conectar al Servidor</a>
-        </div>
-    </section>
+<div class="card">
+<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/PNB_Logo.png">
+<div class="content">
+<h3>Policía</h3>
+<p>Mantén el orden.</p>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- Jobs Section -->
-    <section class="jobs-section" id="trabajos">
-        <span class="palm-decoration palm-left">🌴</span>
-        <span class="palm-decoration palm-right">🌴</span>
-        
-        <h2 class="section-title fade-in">💼 TRABAJOS WHITELIST</h2>
-        
-        <div class="jobs-grid">
-            <div class="job-card fade-in">
-                <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/gs.png" alt="Trabajo de Minero" class="job-image">
-                <div class="job-content">
-                    <span class="job-badge">WHITELIST</span>
-                    <h3>⛏️ MINERO</h3>
-                    <p>Adéntrate en las profundidades de las minas de Bahía y extrae valiosos recursos naturales. Forma parte de la columna vertebral industrial de nuestra isla.</p>
-                </div>
-            </div>
+<!-- NUEVA SECCIÓN CIUDADANOS -->
+<section class="section">
+<h2 class="title">👥 Ciudadanos</h2>
+<div class="citizens">
 
-            <div class="job-card fade-in">
-                <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/DSB_Logo.png" alt="DSB Departamento de Salud" class="job-image">
-                <div class="job-content">
-                    <span class="job-badge" style="background: #e74c3c;">Whitelist</span>
-                    <h3>🚑 DSB - SALUD</h3>
-                    <p>Departamento de Salud de Bahía. Salva vidas en las paradisíacas pero peligrosas costas caribeñas. Sistema médico avanzado, ambulancias equipadas y mecánicas de heridas realistas.</p>
-                </div>
-            </div>
+<div class="citizen-card">
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d">
+<div class="overlay">
+<div class="name">Carlos Méndez</div>
+<div class="role">Empresario</div>
+</div>
+</div>
 
-            <div class="job-card fade-in">
-                <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/PNB_Logo.png" alt="PNB Policía" class="job-image">
-                <div class="job-content">
-                    <span class="job-badge" style="background: #3498db;">Whitelist</span>
-                    <h3>👮 PNB - SEGURIDAD</h3>
-                    <p>Policía Nacional de Bahía. Mantén el orden en las calles de nuestro paraíso tropical. Patrullajes en lanchas, 4x4 y helicópteros.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="citizen-card">
+<img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330">
+<div class="overlay">
+<div class="name">María Santos</div>
+<div class="role">Médica</div>
+</div>
+</div>
 
-    <!-- Gangs Section -->
-    <section class="gangs-section" id="bandas">
-        <div class="gangs-content fade-in">
-            <div class="free-badge">💎</div>
-            <h2>BANDAS, MAFIAS Y CARTELES</h2>
-            <p>¡Totalmente <strong>GRATIS</strong>! En Bahía RP creemos en la libertad del crimen organizado. 
-            Crea tu propia banda callejera, establece una mafia italiana o controla el tráfico como un cartel latinoamericano.</p>
-            
-            <div class="gang-types">
-                <div class="gang-type">🔫 Bandas Callejeras</div>
-                <div class="gang-type">🎩 Mafias</div>
-                <div class="gang-type">🌿 Carteles</div>
-            </div>
-        </div>
-    </section>
+<div class="citizen-card">
+<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e">
+<div class="overlay">
+<div class="name">Ricky Sombra</div>
+<div class="role">Mecánico</div>
+</div>
+</div>
 
-    <!-- Cars Section -->
-    <section class="cars-section" id="coches">
-        <h2 class="section-title fade-in">🏎️ COCHES CUSTOM</h2>
-        
-        <div class="cars-showcase">
-            <div class="car-card fade-in">
-                <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/a2ac30-sd3.jpg" alt="Coche Custom 1">
-                <div class="car-overlay">
-                    <h3>Motodeportivas</h3>
-                    <p>Velocidad máxima para las carreteras costeras</p>
-                </div>
-            </div>
+<div class="citizen-card">
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80">
+<div class="overlay">
+<div class="name">Isabella Cruz</div>
+<div class="role">Artista</div>
+</div>
+</div>
 
-            <div class="car-card fade-in">
-                <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/6fcc11-yos8.jpg" alt="Coche Custom 2">
-                <div class="car-overlay">
-                    <h3>Off-Road</h3>
-                    <p>Domina las playas de Bahía</p>
-                </div>
-            </div>
+</div>
+</section>
 
-            <div class="car-card fade-in">
-                <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/273eec-dmttc5.webp" alt="Coche Custom 3">
-                <div class="car-overlay">
-                    <h3>Clásicos Caribeños</h3>
-                    <p>Estilo retro para los verdaderos conocedores</p>
-                </div>
-            </div>
+<footer>
+<p>© 2026 Bahía RP</p>
+</footer>
 
-            <div class="car-card fade-in">
-                <img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/2bda8e-x324.jpg" alt="Coche Custom 4">
-                <div class="car-overlay">
-                    <h3>Tuning Extremo</h3>
-                    <p>Personalización ilimitada para tu vehículo</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- === NUEVA SECCIÓN: CIUDADANOS DESTACADOS === -->
-    <section class="citizens-section" id="ciudadanos">
-        <span class="palm-decoration palm-left">🌴</span>
-        <span class="palm-decoration palm-right">🌴</span>
-        
-        <h2 class="section-title fade-in">👥 CIUDADANOS DE BAHÍA</h2>
-        
-        <div class="citizens-intro fade-in">
-            <p>Conoce a los personajes que dan vida a nuestras calles. Desde empresarios hasta artistas callejeros, 
-            cada ciudadano tiene una historia única que contar. ¿Serás tú el próximo en unirte a nuestra galería?</p>
-        </div>
-
-        <div class="collage-container">
-            <div class="collage-grid">
-                <!-- Ciudadano 1 - Grande -->
-                <div class="collage-item large fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop" alt="Ciudadano 1">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Carlos "El Patrón" Mendez</div>
-                        <div class="citizen-role">Empresario / Nightclub</div>
-                        <div class="citizen-quote">"En Bahía, el dinero habla y yo escucho."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 2 - Pequeño -->
-                <div class="collage-item small fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop" alt="Ciudadano 2">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">María Santos</div>
-                        <div class="citizen-role">Médico DSB</div>
-                        <div class="citizen-quote">"Salvar vidas es mi vocación."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 3 - Alto -->
-                <div class="collage-item tall fade-in">
-                    <span class="status-badge status-offline"></span>
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=800&fit=crop" alt="Ciudadano 3">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Ricky "La Sombra"</div>
-                        <div class="citizen-role">Mecánico</div>
-                        <div class="citizen-quote">"Ningún coche se me resiste."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 4 - Medio -->
-                <div class="collage-item medium fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=400&fit=crop" alt="Ciudadano 4">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Isabella Cruz</div>
-                        <div class="citizen-role">Artista / Música</div>
-                        <div class="citizen-quote">"La música es el alma de Bahía."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 5 - Pequeño -->
-                <div class="collage-item small fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" alt="Ciudadano 5">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Juan "El Policía"</div>
-                        <div class="citizen-role">PNB - Sargento</div>
-                        <div class="citizen-quote">"La ley es la ley."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 6 - Ancho -->
-                <div class="collage-item wide fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200&h=400&fit=crop" alt="Ciudadano 6">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Sofia "La Reina" Vega</div>
-                        <div class="citizen-role">Influencer / Streamer</div>
-                        <div class="citizen-quote">"Documentando cada momento en el paraíso."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 7 - Medio -->
-                <div class="collage-item medium fade-in">
-                    <span class="status-badge status-offline"></span>
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=400&fit=crop" alt="Ciudadano 7">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Diego Marino</div>
-                        <div class="citizen-role">Pescador / Comerciante</div>
-                        <div class="citizen-quote">"El mar da y el mar quita."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 8 - Pequeño -->
-                <div class="collage-item small fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop" alt="Ciudadano 8">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Elena Torres</div>
-                        <div class="citizen-role">Chef / Restaurante</div>
-                        <div class="citizen-quote">"Sabores auténticos del Caribe."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 9 - Alto -->
-                <div class="collage-item tall fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=800&fit=crop" alt="Ciudadano 9">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Miguel "El Corredor"</div>
-                        <div class="citizen-role">Taxista / Informante</div>
-                        <div class="citizen-quote">"Conozco cada rincón de la isla."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 10 - Pequeño -->
-                <div class="collage-item small fade-in">
-                    <span class="status-badge status-offline"></span>
-                    <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop" alt="Ciudadano 10">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Carmen Diaz</div>
-                        <div class="citizen-role">Abogada</div>
-                        <div class="citizen-quote">"Todos merecen una defensa."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 11 - Grande -->
-                <div class="collage-item large fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=800&h=800&fit=crop" alt="Ciudadano 11">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Alejandro "El Arquitecto"</div>
-                        <div class="citizen-role">Constructor / Inmobiliaria</div>
-                        <div class="citizen-quote">"Construyendo el futuro de Bahía."</div>
-                    </div>
-                </div>
-
-                <!-- Ciudadano 12 - Medio -->
-                <div class="collage-item medium fade-in">
-                    <span class="status-badge status-online"></span>
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&h=400&fit=crop" alt="Ciudadano 12">
-                    <div class="citizen-overlay">
-                        <div class="citizen-name">Lucia Fernandez</div>
-                        <div class="citizen-role">Periodista</div>
-                        <div class="citizen-quote">"La verdad siempre sale a la luz."</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="social-links">
-            <a href="https://discord.gg/XeqR9QjGpq" target="_blank" title="Discord">💬</a>
-            <a href="https://www.tiktok.com/@labahia_rp" target="_blank" title="TikTok">🎵</a>
-            <a href="#" target="_blank" title="YouTube">📺</a>
-            <a href="https://www.instagram.com/labahia.rp" target="_blank" title="Instagram">📷</a>
-        </div>
-        <p>&copy; 2026 Bahía RP - Servidor Caribeño. Todos los derechos reservados. 🌴</p>
-        <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">Hecho con 💙 en las costas del Caribe</p>
-    </footer>
-
-    <script>
-        // Audio Control
-        let isPlaying = false;
-        const audio = document.getElementById('serverMusic');
-        const audioControl = document.getElementById('audioControl');
-        const audioIcon = document.getElementById('audioIcon');
-        const audioText = document.getElementById('audioText');
-
-        function toggleMusic() {
-            if (isPlaying) {
-                audio.pause();
-                audioControl.classList.remove('playing');
-                audioIcon.textContent = '🎵';
-                audioText.textContent = 'Reproducir Música';
-            } else {
-                audio.play().catch(e => console.log('Autoplay blocked:', e));
-                audioControl.classList.add('playing');
-                audioIcon.textContent = '⏸️';
-                audioText.textContent = 'Pausar Música';
-            }
-            isPlaying = !isPlaying;
-        }
-
-        // Scroll Animation
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Parallax Effect
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.hero');
-            parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
-        });
-
-        // Efecto hover adicional para el collage
-        document.querySelectorAll('.collage-item').forEach(item => {
-            item.addEventListener('mouseenter', function() {
-                this.style.zIndex = '100';
-            });
-            item.addEventListener('mouseleave', function() {
-                setTimeout(() => {
-                    this.style.zIndex = '1';
-                }, 400);
-            });
-        });
-    </script>
 </body>
 </html>
