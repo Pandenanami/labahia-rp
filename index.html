@@ -3,139 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Bahía RP - Rediseño LA</title>
+<title>La Bahía RP - Servidor FiveM Caribeño</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
 
 <style>
-:root {
-    --primary:#ff3c38;
-    --secondary:#1e90ff;
-    --accent:#ffd166;
-    --dark:#0a0a0a;
-}
-
 *{margin:0;padding:0;box-sizing:border-box;}
 
-body{
-    font-family:'Montserrat',sans-serif;
-    background:#000;
-    color:#fff;
+:root{
+--caribbean-blue:#00D4FF;
+--tropical-orange:#FF6B35;
+--sunset-pink:#FF006E;
+--sand-gold:#FFD700;
+--deep-ocean:#0066CC;
+--palm-green:#2ECC71;
 }
 
-/* HERO CON PLAYA LOS ANGELES */
+body{
+font-family:'Montserrat',sans-serif;
+background:#0a0a0a;
+color:#fff;
+}
+
+/* HERO ORIGINAL */
 .hero{
-    height:100vh;
-    background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.7)),
-    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
-    background-size:cover;
-    background-position:center;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
+height:100vh;
+background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.7)),
+url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
 }
 
 .hero h1{
-    font-family:'Bebas Neue';
-    font-size:6rem;
-    color:var(--accent);
-}
-
-.hero p{margin-top:20px;color:#ddd;max-width:700px;}
-
-.cta{
-    margin-top:30px;
-    display:inline-block;
-    padding:15px 40px;
-    background:linear-gradient(45deg,var(--primary),var(--secondary));
-    border-radius:50px;
-    text-decoration:none;
-    color:#fff;
-    font-weight:700;
+font-family:'Bebas Neue';
+font-size:6rem;
+color:var(--caribbean-blue);
 }
 
 .section{padding:80px 20px;}
 
 .title{
-    text-align:center;
-    font-size:3rem;
-    font-family:'Bebas Neue';
-    color:var(--primary);
-    margin-bottom:50px;
+text-align:center;
+font-size:3rem;
+font-family:'Bebas Neue';
+margin-bottom:50px;
+background:linear-gradient(45deg,var(--caribbean-blue),var(--sand-gold));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-/* TRABAJOS */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:20px;
-    max-width:1200px;
-    margin:auto;
+/* COCHES ORIGINAL */
+.cars{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+max-width:1200px;
+margin:auto;
 }
 
-.card{
-    background:#111;
-    border:2px solid var(--secondary);
-    border-radius:15px;
-    overflow:hidden;
+.car{
+position:relative;
+overflow:hidden;
+border-radius:20px;
+border:2px solid var(--caribbean-blue);
 }
 
-.card img{width:100%;height:200px;object-fit:cover;}
-
-.card .content{padding:20px;}
-
-.card h3{color:var(--accent);}
-
-/* NUEVA SECCIÓN CIUDADANOS */
-.citizens{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-    max-width:1200px;
-    margin:auto;
+.car img{
+width:100%;
+height:250px;
+object-fit:cover;
+transition:.4s;
 }
 
-.citizen-card{
-    position:relative;
-    border-radius:15px;
-    overflow:hidden;
-    border:2px solid var(--secondary);
+.car:hover img{transform:scale(1.2);}
+
+.car .overlay{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+padding:20px;
+background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
+transform:translateY(100%);
+transition:.3s;
 }
 
-.citizen-card img{
-    width:100%;
-    height:300px;
-    object-fit:cover;
-    transition:.3s;
+.car:hover .overlay{transform:translateY(0);}
+
+/* NUEVA SECCIÓN COLLAGE CIUDADANOS */
+.collage{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+grid-auto-rows:200px;
+gap:15px;
+max-width:1200px;
+margin:auto;
 }
 
-.citizen-card:hover img{transform:scale(1.1);}
-
-.overlay{
-    position:absolute;
-    bottom:0;
-    left:0;
-    right:0;
-    background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
-    padding:20px;
-    transform:translateY(100%);
-    transition:.3s;
+.item{
+position:relative;
+overflow:hidden;
+border-radius:15px;
+border:2px solid rgba(0,212,255,.3);
 }
 
-.citizen-card:hover .overlay{transform:translateY(0);}
-
-.name{
-    font-family:'Bebas Neue';
-    font-size:1.5rem;
-    color:var(--accent);
+.item img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:.4s;
 }
 
-.role{color:var(--secondary);font-size:.9rem;}
+.item:hover img{transform:scale(1.1);}
+
+.item.large{grid-column:span 2;grid-row:span 2;}
+.item.tall{grid-row:span 2;}
+.item.wide{grid-column:span 2;}
+
+.info{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+padding:15px;
+background:linear-gradient(to top,rgba(0,0,0,.9),transparent);
+transform:translateY(100%);
+transition:.3s;
+}
+
+.item:hover .info{transform:translateY(0);}
+
+.name{font-family:'Bebas Neue';color:var(--sand-gold);font-size:1.3rem;}
+.role{color:var(--caribbean-blue);font-size:.8rem;}
 
 footer{
-    padding:40px;
-    text-align:center;
-    border-top:2px solid var(--secondary);
+padding:40px;
+text-align:center;
+border-top:2px solid var(--caribbean-blue);
 }
 
 </style>
@@ -143,83 +150,74 @@ footer{
 
 <body>
 
-<!-- HERO -->
 <section class="hero">
 <div>
 <h1>🌴 BAHÍA RP 🌴</h1>
-<p>Servidor FiveM con estilo Los Ángeles, playas, roleplay serio y comunidad activa</p>
-<a href="#" class="cta">Conectar</a>
+<p>Servidor caribeño de FiveM con economía equilibrada y rol único</p>
 </div>
 </section>
 
-<!-- TRABAJOS -->
+<!-- COCHES (MANTENIDO) -->
 <section class="section">
-<h2 class="title">💼 Trabajos</h2>
-<div class="grid">
-<div class="card">
-<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/gs.png">
-<div class="content">
-<h3>Minero</h3>
-<p>Extrae recursos y gana dinero.</p>
-</div>
+<h2 class="title">🏎️ Coches</h2>
+<div class="cars">
+
+<div class="car">
+<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/a2ac30-sd3.jpg">
+<div class="overlay"><h3>Deportivos</h3></div>
 </div>
 
-<div class="card">
-<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/DSB_Logo.png">
-<div class="content">
-<h3>Médico</h3>
-<p>Salva vidas en la ciudad.</p>
-</div>
+<div class="car">
+<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/6fcc11-yos8.jpg">
+<div class="overlay"><h3>Offroad</h3></div>
 </div>
 
-<div class="card">
-<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/PNB_Logo.png">
-<div class="content">
-<h3>Policía</h3>
-<p>Mantén el orden.</p>
+<div class="car">
+<img src="https://r2.fivemanage.com/HENiDeoxdlcdrEAPCqEzy/273eec-dmttc5.webp">
+<div class="overlay"><h3>Clásicos</h3></div>
 </div>
-</div>
+
 </div>
 </section>
 
-<!-- NUEVA SECCIÓN CIUDADANOS -->
+<!-- NUEVA SECCIÓN COLLAGE -->
 <section class="section">
 <h2 class="title">👥 Ciudadanos</h2>
-<div class="citizens">
 
-<div class="citizen-card">
+<div class="collage">
+
+<div class="item large">
 <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d">
-<div class="overlay">
-<div class="name">Carlos Méndez</div>
-<div class="role">Empresario</div>
-</div>
+<div class="info"><div class="name">Carlos</div><div class="role">Empresario</div></div>
 </div>
 
-<div class="citizen-card">
+<div class="item">
 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330">
-<div class="overlay">
-<div class="name">María Santos</div>
-<div class="role">Médica</div>
-</div>
+<div class="info"><div class="name">María</div><div class="role">Médica</div></div>
 </div>
 
-<div class="citizen-card">
+<div class="item tall">
 <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e">
-<div class="overlay">
-<div class="name">Ricky Sombra</div>
-<div class="role">Mecánico</div>
-</div>
+<div class="info"><div class="name">Ricky</div><div class="role">Mecánico</div></div>
 </div>
 
-<div class="citizen-card">
+<div class="item wide">
 <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80">
-<div class="overlay">
-<div class="name">Isabella Cruz</div>
-<div class="role">Artista</div>
+<div class="info"><div class="name">Isabella</div><div class="role">Artista</div></div>
 </div>
+
+<div class="item">
+<img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e">
+<div class="info"><div class="name">Juan</div><div class="role">Policía</div></div>
+</div>
+
+<div class="item">
+<img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2">
+<div class="info"><div class="name">Elena</div><div class="role">Chef</div></div>
 </div>
 
 </div>
+
 </section>
 
 <footer>
